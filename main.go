@@ -20,16 +20,16 @@ func main() {
 	godotenv.Load()
 	dbSting := os.Getenv("DB_CONNECT_STRING")
 
-	db, err := sql.Open("mysql", dbSting)
-	if err != nil {
-		panic(err)
-	}
-
 	router := gin.Default()
 
 	gin.SetMode(gin.ReleaseMode)
 
 	router.POST("/set-ip", func(c *gin.Context) {
+		db, err := sql.Open("mysql", dbSting)
+		if err != nil {
+			panic(err)
+		}
+
 		var request SetIP
 		if err := c.BindJSON(&request); err != nil {
 			c.JSON(400, gin.H{
@@ -69,6 +69,11 @@ func main() {
 	})
 
 	router.GET("/get-ip", func(c *gin.Context) {
+		db, err := sql.Open("mysql", dbSting)
+		if err != nil {
+			panic(err)
+		}
+
 		id := c.Query("id")
 		fmt.Println(id)
 		stmt, err := db.Prepare("SELECT ip FROM info WHERE id = ?")
