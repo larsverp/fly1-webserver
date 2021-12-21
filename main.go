@@ -60,6 +60,8 @@ func main() {
 			}
 		}
 
+		db.Close()
+
 		c.JSON(200, gin.H{
 			"message": "success",
 		})
@@ -85,6 +87,7 @@ func main() {
 			})
 			return
 		}
+		db.Close()
 		c.JSON(200, gin.H{
 			"ip": ip,
 		})
